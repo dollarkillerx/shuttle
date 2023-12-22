@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "google.dev/google/shuttle/proto/grpc_client_plugin";
+
+package proto;
+
+service GuardLinkGrpcPlugin {
+  rpc Stream(stream StreamRequest) returns (stream StreamResponse) {};
+}
+
+message StreamRequest {
+  bytes data = 1;
+}
+
+message StreamResponse {
+  bytes data = 1;
+}

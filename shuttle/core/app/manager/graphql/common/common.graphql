@@ -1,0 +1,36 @@
+# Root Query and Mutation Type
+type Query {
+    healthcheck: String!
+    now: Timestamp!
+}
+
+type Mutation {
+    healthcheck: String!
+    uploadFile(file: Upload!): String!
+}
+
+directive @hasLogined on FIELD_DEFINITION
+directive @OAuth on FIELD_DEFINITION
+
+type AuthPayload {
+    accessTokenString: String!
+}
+
+type Result {
+    ok: Boolean!
+}
+
+scalar Upload
+scalar MaybeFloat64
+scalar MaybeFloat32
+scalar MaybeString
+scalar Int64
+scalar Int32
+scalar Float32
+scalar MaybeBool
+scalar MaybeInt32
+scalar MaybeInt64
+scalar Timestamp
+scalar Map
+scalar StringMap
+scalar Any

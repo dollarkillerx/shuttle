@@ -1,0 +1,17 @@
+extend type Query {
+    app(appId: String!): AppInfo! # 获取app信息
+}
+
+type AppInfo {
+    appId: String!
+    appVersion: Float32!
+    minimumVersion: Float32!
+    state: AppState!
+    errorNotification: String!
+    normalNotification: String!
+}
+
+enum AppState {
+    Enable
+    Disabled
+}

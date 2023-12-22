@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package = "google.dev/google/socks5_discovery/proto";
+
+package proto;
+
+service Socks5Discovery {
+  rpc Discovery(DiscoveryRequest) returns (DiscoveryResponse) {};
+}
+
+message DiscoveryRequest {
+
+}
+
+message DiscoveryResponse {
+  repeated Socks5 socks5s = 1;
+}
+
+message Socks5 {
+  string country = 1; // 国家
+  string address = 2; // 链接地址
+  string username = 3; // username
+  string password = 4; // password
+  int64 delay = 5; // 延迟
+}

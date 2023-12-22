@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+  guard_link_agent_manager:
+    image: guard_link_agent_manager:0.0.1
+    container_name: guard_link_agent_manager
+    restart: always
+    volumes:
+      - ./configs/:/app/configs
+#      - ./static/:/app/static
+    ports:
+      - 8184:8184
+      - 8184:8184

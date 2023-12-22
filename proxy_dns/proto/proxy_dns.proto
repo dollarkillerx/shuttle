@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option go_package = "google.dev/google/proxy_dns/proto";
+
+package proto;
+
+service ProxyDns {
+  rpc Dig(DigRequest) returns (DigResponse) {};
+  rpc Hello(HelloRequest) returns (HelloResponse) {};
+}
+
+message HelloRequest {
+  string msg = 1;
+}
+
+message HelloResponse {
+  string msg = 1;
+}
+
+message DigRequest {
+  bytes data = 1;
+}
+
+message DigResponse {
+  bytes data = 1;
+}

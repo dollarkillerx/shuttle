@@ -1,0 +1,22 @@
+protocol = "wss"
+listen = "0.0.0.0:8584"
+manager_rpc_addr = "43.135.75.195:8184"
+internet_address = "192.227.234.228:8485"
+agent_id = "cgc2l9l8q0gm6inchco0"
+register_ip = "192.168.31.61"
+
+[http]
+path = "/"
+
+[ws]
+path = "/86957612-b44b-491d-a3fb-cfbebfa4e435"
+compress = false
+
+[tls]
+cert = ""
+key = ""
+
+[remote_socks5]
+addr = ""
+username = ""
+password = ""

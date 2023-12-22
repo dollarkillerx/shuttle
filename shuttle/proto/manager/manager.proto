@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option go_package = "google.dev/google/shuttle/proto/manager";
+
+package proto;
+
+service GuardLinkManager {
+  // 1. 注册节点
+  rpc NodeRegistration(NodeRegistrationRequest) returns (NodeRegistrationResponse) {};
+  // 2. 上报流量
+  rpc TrafficReport(TrafficReportRequest) returns (TrafficReportResponse) {};
+}
+
+// node -(base info)-> manager -(token)-> node
+// flutter -(get node token)-> manager -(node token)-> flutter -> node
+
+message NodeRegistrationRequest {
+  string ip = 1; // 注册id
+  string internetAddress = 2; // 对外链接地址
+  string nodeId = 3; // 节点id
+
+  // protocol
+  protocol protocol = 4; // 协议
+  string wssPath = 5; // wss path
+}
+
+enum protocol {
+  WSS = 0;
+  GRPC = 1;
+}
+
+message NodeRegistrationResponse {
+  string nodeId = 1;
+  string aesKey = 2; // 用于解析用户 token
+}
+
+message TrafficReportRequest {
+  string jwt = 1;     // 用户jwt
+  int64 traffic = 2;  // 用户每消耗10m 上报一次
+}
+
+message TrafficReportResponse {
+
+}

@@ -1,0 +1,11 @@
+version: "3.3"
+services:
+  socks5_discovery:
+    image: socks5_discovery:0.0.1
+    container_name: socks5_discovery
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ./configs/:/app/configs
+      - ./resource/:/app/resource
+

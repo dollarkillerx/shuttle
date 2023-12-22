@@ -1,0 +1,57 @@
+extend type Query {
+    user: UserInformation @hasLogined
+    captcha: Captcha
+}
+
+extend type Mutation {
+    sendEmail(input: SendEmailRequest): SendEmailResponse # send sms
+    userRegistration(input: UserRegistration): AuthPayload # 用户注册
+}
+
+input SendEmailRequest {
+    email: String!
+    captchaId: String!
+    captchaCode: String!
+}
+
+type SendEmailResponse {
+    captchaId: String!
+}
+
+input UserRegistration {
+    captchaId: String!
+    captchaCode: String!
+    os: OS!
+    token: String!      # 用户token
+    deviceName: String! # 设备名称
+    deviceId: String!   # 设备id
+    appId: String!  # app项目的id ， 免费卖广告， 收费卖套餐
+}
+
+enum OS {
+    Ios
+    Android
+    Macos
+    Windows
+}
+
+type Captcha {
+    base64Captcha: String!
+    captchaId: String!
+}
+
+type UserInformation {
+    os: OS!
+    token: String!      # 用户token
+    deviceName: String! # 设备名称
+    deviceId: String!   # 设备id
+    appId: String!  # app项目的id ， 免费卖广告， 收费卖套餐
+
+    vip: Boolean! # 免费账户
+    comboId: String! # 套餐id
+    daysLeft: Int64! # 剩余套餐天数
+    remainingFlow: Int64! # 剩余流量
+}
+
+
+

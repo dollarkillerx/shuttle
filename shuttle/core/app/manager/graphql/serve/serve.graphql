@@ -1,0 +1,53 @@
+extend type Query {
+    combos: Combos!  @hasLogined # 获取套餐信息
+    nodes: Nodes!    @hasLogined # 获取节点列表
+    nodeToken(nodeId: String!, mountToken: String): NodeToken!  @hasLogined # 获取节点密钥
+}
+
+type Nodes {
+    nodes: [NodeItem!]! # 私有节点
+    mountNodes: [MountNode!]! # 挂载节点
+}
+
+type NodeItem {
+    nodeId: String!   # 节点id
+    nodeName: String! # 节点名称
+    country: String!  # 国家
+    describe: String! # 描述
+    free: Boolean!    # 免费节点
+    mountSupport: Boolean! # 挂载支持
+}
+
+type MountNode {
+    nodeId: String!   # 节点id
+    nodeName: String! # 节点名称
+    country: String!  # 国家
+    describe: String! # 描述
+    mountToken: String! # 挂载token
+}
+
+type Combos {
+    combos: [Combo!]!
+}
+
+# combo 套餐
+type Combo {
+    comboId: String!  # 套餐id
+    describe: String! # 描述
+    traffic: Int64!   # 套餐流量
+    day: Int64! # 套餐天数
+    amount: Float32! # 套餐金额
+}
+
+# NodeToken ...
+type NodeToken {
+    internetAddress: String! # 服务器地址
+    nodeProtocol: NodeProtocol! # 链接方式
+    wsPath: String! # ws path
+    token: String!  # 节点链接token
+}
+
+enum NodeProtocol {
+    WSS
+    RPC
+}

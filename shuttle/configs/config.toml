@@ -1,0 +1,32 @@
+GraphQLListenAddress = "0.0.0.0:8083"
+RPCListenAddress = "0.0.0.0:8084"
+AgentAesKey="cgbsk003c01nkbq0ahgg"
+Socks5DiscoveryAddress="192.227.234.228:8234"
+RPCToken = "8e24a40a-7f13-469d-8141-e5a81df7b629"
+EnablePlayground = true
+TimeOut = 6
+Salt = "6aff45ff-1ffd-473d-9693-f21d8ab84b85"
+
+[JWTConfiguration]
+SecretKey = "e31ce15c-5315-44eb-8a8f-a272924c03fd"
+OperationKey = "6aff45ff-1ffd-473d-9693-f21d8ab84b85"
+
+[PostgresConfiguration]
+Host = "1.15.63.90"
+Port = 5532
+User = "cpx"
+Password = "d1teQHAKVw"
+DBName = "GuardLink"
+
+[RedisConfiguration]
+Addr = "1.15.63.90:6879"
+DB = 1
+Password = "KgKD8zUW3"
+
+[ETCDConfiguration]
+Endpoints = [
+    "127.0.0.1:2379"
+]
+
+[LoggerConfig]
+Filename = "eim-log.log"
