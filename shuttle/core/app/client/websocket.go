@@ -3,12 +3,12 @@ package client
 import (
 	"bytes"
 	"crypto/tls"
+	"log"
 	"net"
 	"net/http"
 	"net/url"
 
 	"github.com/gorilla/websocket"
-	"google.dev/google/shuttle/utils/log"
 )
 
 func (c *Client) wrapWSS(conn net.Conn) net.Conn {
@@ -75,7 +75,7 @@ func (w *wsWrapper) Write(b []byte) (n int, err error) {
 
 func (w *wsWrapper) handshake() (conn *websocket.Conn, err error) {
 	config := w.client.Config
-	log.Infof("[websocket] upgrade to websocket at %s", config.WSPath)
+	log.Printf("[websocket] upgrade to websocket at %s \n", config.WSPath)
 	u := url.URL{
 		Scheme: "ws",
 		Host:   config.ServerAddr,
@@ -89,7 +89,7 @@ func (w *wsWrapper) handshake() (conn *websocket.Conn, err error) {
 	}
 	conn, res, err := websocket.NewClient(w.Conn, &u, header, 0, 0)
 	if err == nil {
-		log.Errorf("[websocket] connection established: %s", res.Status)
+		log.Printf("[websocket] connection established: %s \n", res.Status)
 	}
 	return
 }

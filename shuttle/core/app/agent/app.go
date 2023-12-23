@@ -2,11 +2,11 @@ package agent
 
 import (
 	"crypto/tls"
+	"log"
 	"sync"
 	"time"
 
 	"google.dev/google/shuttle/pkg"
-	"google.dev/google/shuttle/utils/log"
 )
 
 type Application struct {
@@ -48,7 +48,7 @@ func (app *Application) Run() {
 		defer group.Done()
 		err := app.client.RunAgentToManagerRpc()
 		if err != nil {
-			log.Errorf("RpcClient error: %v", err)
+			log.Printf("RpcClient error: %v \n", err)
 		}
 	}()
 
@@ -56,7 +56,7 @@ func (app *Application) Run() {
 	go func() {
 		defer group.Done()
 		if err := app.srv.Serve(); err != nil {
-			log.Errorf("Agent Server failed: %v", err)
+			log.Printf("Agent Server failed: %v \n", err)
 		}
 	}()
 

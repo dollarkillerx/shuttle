@@ -3,6 +3,7 @@ package resolvers
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"google.dev/google/shuttle/core/app/manager/conf"
@@ -12,7 +13,6 @@ import (
 	"google.dev/google/shuttle/core/app/manager/utils"
 	"google.dev/google/shuttle/pkg"
 	"google.dev/google/shuttle/proto/manager"
-	"google.dev/google/shuttle/utils/log"
 	"google.dev/google/socks5_discovery/proto"
 )
 
@@ -146,7 +146,7 @@ func (r *queryResolver) Nodes(ctx context.Context) (*generated.Nodes, error) {
 
 	discovery, err := r.socks5DiscoveryClient.Discovery(context.TODO(), &proto.DiscoveryRequest{})
 	if err != nil {
-		log.Error(err)
+		log.Println(err)
 		return nil, err
 	}
 

@@ -4,7 +4,7 @@ import (
 	"github.com/txthinking/socks5"
 	"google.dev/google/shuttle/core/socks"
 	"google.dev/google/shuttle/utils"
-	"google.dev/google/shuttle/utils/log"
+	"log"
 
 	"io"
 	"net"
@@ -19,16 +19,16 @@ func (c *Client) socks5Handler(conn net.Conn) {
 	defer conn.Close()
 
 	if err := c.socks5Proxy.Negotiate(conn); err != nil {
-		log.Error(err)
+		log.Println(err)
 		return
 	}
 	r, err := c.socks5Proxy.GetRequest(conn)
 	if err != nil {
-		log.Error(err)
+		log.Println(err)
 		return
 	}
 	if err := c.socks5Proxy.Handle.TCPHandle(c.socks5Proxy, conn, r); err != nil {
-		log.Error(err)
+		log.Println(err)
 	}
 }
 
@@ -101,27 +101,27 @@ func (c *Client) handleConnect(server *socks5.Server, conn net.Conn, req *socks5
 	var isProxy bool
 
 	if PacProxy(req.Host(), c.Config.Pac) && c.Config.SetProxyOK == true && c.Config.ServerAddr != "" {
-		log.Infof(`[socks5] "connect" dial agent to connect %s for %s`, req.Address(), conn.RemoteAddr())
+		log.Printf(`[socks5] "connect" dial agent to connect %s for %s \n`, req.Address(), conn.RemoteAddr())
 
 		isProxy = true
 		nextHop, err = c.dialServer()
 		if err != nil {
-			log.Errorf(`[socks5] "connect" dial agent failed: %v`, err)
+			log.Printf(`[socks5] "connect" dial agent failed: %v \n`, err)
 			if err = socks.NewReply(socks.HostUnreachable, nil).Write(conn); err != nil {
-				log.Errorf(`[socks5] "connect" write reply failed: %v`, err)
+				log.Printf(`[socks5] "connect" write reply failed: %v \n`, err)
 			}
 			return
 		}
 		defer nextHop.Close()
 
 	} else {
-		log.Infof(`[socks5] "connect" dial %s for %s`, req.Address(), conn.RemoteAddr())
+		log.Printf(`[socks5] "connect" dial %s for %s \n`, req.Address(), conn.RemoteAddr())
 
 		nextHop, err = net.Dial("tcp", req.Address())
 		if err != nil {
-			log.Errorf(`[socks5] "connect" dial remote failed: %v`, err)
+			log.Printf(`[socks5] "connect" dial remote failed: %v \n`, err)
 			if err = socks.NewReply(socks.HostUnreachable, nil).Write(conn); err != nil {
-				log.Errorf(`[socks5] "connect" write reply failed: %v`, err)
+				log.Printf(`[socks5] "connect" write reply failed: %v \n`, err)
 			}
 			return
 		}
@@ -131,21 +131,21 @@ func (c *Client) handleConnect(server *socks5.Server, conn net.Conn, req *socks5
 	var dash rune
 	if isProxy {
 		if err = req.Write(nextHop); err != nil {
-			log.Errorf(`[socks5] "connect" send request failed: %v`, err)
+			log.Printf(`[socks5] "connect" send request failed: %v \n`, err)
 			return
 		}
 		dash = '-'
 	} else {
 		if err = socks.NewReply(socks.Succeeded, nil).Write(conn); err != nil {
-			log.Errorf(`[socks5] "connect" write reply failed: %v`, err)
+			log.Printf(`[socks5] "connect" write reply failed: %v \n`, err)
 			return
 		}
 		dash = '='
 	}
 
-	log.Infof(`[socks5] "connect" tunnel established %s <%c> %s`, conn.RemoteAddr(), dash, req.Address())
+	log.Printf(`[socks5] "connect" tunnel established %s <%c> %s \n`, conn.RemoteAddr(), dash, req.Address())
 	if err := utils.Transport(conn, nextHop); err != nil {
-		log.Errorf(`[socks5] "connect" transport failed: %v`, err)
+		log.Printf(`[socks5] "connect" transport failed: %v \n`, err)
 	}
-	log.Infof(`[socks5] "connect" tunnel disconnected %s >%c< %s`, conn.RemoteAddr(), dash, req.Address())
+	log.Printf(`[socks5] "connect" tunnel disconnected %s >%c< %s \n`, conn.RemoteAddr(), dash, req.Address())
 }

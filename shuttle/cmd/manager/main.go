@@ -9,6 +9,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/go-chi/chi/v5"
 	"google.dev/google/common/pkg/logger"
 	"google.dev/google/shuttle/core/app/manager/conf"
 	"google.dev/google/shuttle/core/app/manager/generated"

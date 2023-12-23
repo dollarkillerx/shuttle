@@ -3,10 +3,10 @@ package agent
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"google.dev/google/shuttle/proto/manager"
-	"google.dev/google/shuttle/utils/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -54,7 +54,7 @@ func (c *RpcClient) RunAgentToManagerRpc() error {
 
 	c.Config.conf.AgentID = response.NodeId
 	c.Config.conf.WriteConf()
-	log.Infof("NodeRegistration %s", response.NodeId)
+	log.Printf("NodeRegistration %s \n", response.NodeId)
 
 	c.Config.SetJWTAESKey(response.AesKey)
 
@@ -76,7 +76,7 @@ func (c *RpcClient) RunAgentToManagerRpc() error {
 			WssPath: c.Config.WSPath,
 		})
 		if err != nil {
-			log.Error(err)
+			log.Println(err)
 			continue
 		}
 

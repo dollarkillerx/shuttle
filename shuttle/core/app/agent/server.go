@@ -2,12 +2,12 @@ package agent
 
 import (
 	"crypto/tls"
+	"log"
 	"sync"
 
 	"google.dev/google/shuttle/core/app/agent/conf"
 	"google.dev/google/shuttle/pkg"
 	"google.dev/google/shuttle/utils"
-	"google.dev/google/shuttle/utils/log"
 )
 
 type Server interface {
@@ -65,7 +65,7 @@ func GetServerTLSConfig(cert, key string) (*tls.Config, error) {
 	var certificate tls.Certificate
 	var err error
 	if cert == "" || key == "" {
-		log.Info("Generate default TLS key pair")
+		log.Println("Generate default TLS key pair")
 		var rawCert, rawKey []byte
 		rawCert, rawKey, err = utils.GenKeyPair()
 		if err != nil {

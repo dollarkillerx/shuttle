@@ -14,7 +14,7 @@ func main() {
 	client.RouterRegister()
 
 	addr := "127.0.0.1:8985"
-	log.Infof("GuardLink API Run: %s \n", addr)
+	log.Printf("GuardLink API Run: %s \n", addr)
 
 	server := &http.Server{Addr: addr, Handler: nil}
 	if err := server.ListenAndServe(); err != nil {

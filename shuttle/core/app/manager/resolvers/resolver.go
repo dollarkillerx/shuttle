@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"github.com/patrickmn/go-cache"
 	"image/color"
 	"io"
 	"io/ioutil"

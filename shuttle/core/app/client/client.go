@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"errors"
 	"io"
+	"log"
 	"net"
 
 	"github.com/txthinking/socks5"
@@ -12,7 +13,6 @@ import (
 	"google.dev/google/shuttle/core/limits"
 	"google.dev/google/shuttle/core/net_lib"
 	"google.dev/google/shuttle/core/socks"
-	"google.dev/google/shuttle/utils/log"
 )
 
 // Client holds contexts of the client
@@ -62,7 +62,7 @@ func (c *Client) Serve(listener *net.TCPListener) (closeChannel chan struct{}, e
 		return nil, err
 	}
 	if err := limits.Raise(); err != nil {
-		log.Error("when", "try to raise system limits", "warning", err.Error())
+		log.Printf("when", "try to raise system limits", "warning", err.Error())
 	}
 	c.proxySocks = dial
 	// http proxy => socks5 proxy end
@@ -78,7 +78,7 @@ func (c *Client) Serve(listener *net.TCPListener) (closeChannel chan struct{}, e
 			default:
 				conn, err := listener.Accept()
 				if err != nil {
-					log.Errorf("Acceptance failed: %v", err)
+					log.Printf("Acceptance failed: %v \n", err)
 					continue
 				}
 
@@ -88,7 +88,7 @@ func (c *Client) Serve(listener *net.TCPListener) (closeChannel chan struct{}, e
 					handler, err := probeProtocol(br)
 					if err != nil {
 						conn.Close()
-						log.Errorf("Probe protocol failed: %v", err)
+						log.Printf("Probe protocol failed: %v \n", err)
 						return
 					}
 

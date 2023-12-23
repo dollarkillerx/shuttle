@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/patrickmn/go-cache"
 	"image/png"
 
 	"github.com/afocus/captcha"

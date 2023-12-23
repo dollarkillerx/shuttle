@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
-	"google.dev/google/shuttle/core/socks"
-	"google.dev/google/shuttle/utils"
 	"io"
 	"net"
 	"strconv"
+
+	"github.com/txthinking/socks5/core"
 )
 
 // ParseAddress format address x.x.x.x:xx to raw address.
@@ -125,21 +125,21 @@ func (r *Request) Host() string {
 
 func (r *Request) Write(w io.Writer) (err error) {
 	//b := make([]byte, 262)
-	b := utils.SPool.Get().([]byte)
-	defer utils.SPool.Put(b)
+	b := core.SPool.Get().([]byte)
+	defer core.SPool.Put(b)
 
-	b[0] = socks.Version
+	b[0] = core.Version
 	b[1] = r.Cmd
-	b[2] = 0              //rsv
-	b[3] = socks.AddrIPv4 // default
+	b[2] = 0             //rsv
+	b[3] = core.AddrIPv4 // default
 
-	addr := &socks.Addr{
+	addr := &core.Addr{
 		Type: r.Atyp,
 		Host: r.Host(),
 		Port: binary.BigEndian.Uint16(r.DstPort),
 	}
 	if addr == nil {
-		addr = &socks.Addr{}
+		addr = &core.Addr{}
 	}
 	n, _ := addr.Encode(b[3:])
 	length := 3 + n

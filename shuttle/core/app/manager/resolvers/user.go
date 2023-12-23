@@ -2,13 +2,13 @@ package resolvers
 
 import (
 	"context"
+	"log"
 
 	"google.dev/google/shuttle/core/app/manager/generated"
 	"google.dev/google/shuttle/core/app/manager/pkg/enum"
 	"google.dev/google/shuttle/core/app/manager/pkg/errs"
 	"google.dev/google/shuttle/core/app/manager/pkg/models"
 	"google.dev/google/shuttle/core/app/manager/utils"
-	"google.dev/google/shuttle/utils/log"
 )
 
 func (r *mutationResolver) SendEmail(ctx context.Context, input *generated.SendEmailRequest) (*generated.SendEmailResponse, error) {
@@ -21,7 +21,7 @@ func (r *mutationResolver) UserRegistration(ctx context.Context, input *generate
 	var appInfo models.App
 	err := r.Storage.DB().Model(&models.App{}).Where("app_id = ?", input.AppID).First(&appInfo).Error
 	if err != nil {
-		log.Error(err)
+		log.Println(err)
 		return nil, err
 	}
 
@@ -46,7 +46,7 @@ func (r *mutationResolver) UserRegistration(ctx context.Context, input *generate
 		Where("token = ?", input.Token).
 		FirstOrCreate(&user).Error
 	if err != nil {
-		log.Error(err)
+		log.Println(err)
 		return nil, err
 	}
 
@@ -60,7 +60,7 @@ func (r *mutationResolver) UserRegistration(ctx context.Context, input *generate
 		},
 	}, 0)
 	if err != nil {
-		log.Error(err)
+		log.Println(err)
 		return nil, err
 	}
 

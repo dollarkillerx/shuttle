@@ -6,13 +6,12 @@ import (
 	"crypto/tls"
 	"fmt"
 	"io"
+	"log"
 	"net"
 	"net/http"
 
-	"github.com/pkg/errors"
 	"google.dev/google/shuttle/core/net_lib"
 	"google.dev/google/shuttle/utils"
-	"google.dev/google/shuttle/utils/log"
 )
 
 func (c *Client) wrapHTTPS(conn net.Conn) net.Conn {
@@ -49,7 +48,7 @@ func (c *Client) httpHandler(conn net.Conn) {
 		var b1 [1024]byte
 		n, err := conn.Read(b1[:])
 		if err != nil {
-			log.Error(err)
+			log.Println(err)
 			return
 		}
 		b = append(b, b1[:n]...)
@@ -57,14 +56,14 @@ func (c *Client) httpHandler(conn net.Conn) {
 			break
 		}
 		if len(b) >= 2083+18 {
-			log.Error(errors.New("HTTP header too long"))
+			log.Printf("HTTP header too long")
 			return
 		}
 	}
 
 	bb := bytes.SplitN(b, []byte(" "), 3)
 	if len(bb) != 3 {
-		log.Error(errors.New("Invalid Request"))
+		log.Printf("Invalid Request")
 		return
 	}
 	method, address := string(bb[0]), string(bb[1])
@@ -76,14 +75,14 @@ func (c *Client) httpHandler(conn net.Conn) {
 		var err error
 		addr, err = net_lib.GetAddressFromURL(address)
 		if err != nil {
-			log.Error(err)
+			log.Println(err)
 			return
 		}
 	}
 
 	tmp, err := c.proxySocks.Dial("tcp", addr)
 	if err != nil {
-		log.Error()
+		log.Println(err)
 		return
 	}
 	rc := tmp.(*net.TCPConn)
@@ -92,13 +91,13 @@ func (c *Client) httpHandler(conn net.Conn) {
 	if method == "CONNECT" {
 		_, err := conn.Write([]byte("HTTP/1.1 200 Connection established\r\n\r\n"))
 		if err != nil {
-			log.Error(err)
+			log.Println(err)
 			return
 		}
 	}
 	if method != "CONNECT" {
 		if _, err := rc.Write(b); err != nil {
-			log.Error(err)
+			log.Println(err)
 			return
 		}
 	}

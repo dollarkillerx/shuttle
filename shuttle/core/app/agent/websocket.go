@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"crypto/tls"
+	"log"
 	"net"
 	"net/http"
 	"strconv"
@@ -11,7 +12,6 @@ import (
 	"github.com/gorilla/websocket"
 	"google.dev/google/shuttle/pkg"
 	"google.dev/google/shuttle/utils"
-	"google.dev/google/shuttle/utils/log"
 )
 
 // WsServer accept request and call handler to handle it
@@ -39,7 +39,7 @@ func (w *WsServer) Serve() error {
 	for {
 		conn, err := w.Listener.Accept()
 		if err != nil {
-			log.Errorf("WsServer listener accept error: %v", err)
+			log.Printf("WsServer listener accept error: %v \n", err)
 			continue
 		}
 
@@ -166,12 +166,12 @@ func (w *WsHandler) handshake() (wconn *websocket.Conn, err error) {
 	}
 	defer req.Body.Close()
 
-	log.Infof("[websocket] upgrade request received: %s %s", req.Method, req.URL.Path)
+	log.Printf("[websocket] upgrade request received: %s %s", req.Method, req.URL.Path)
 
 	res := newHTTPRes4WS(w.Conn, bufio.NewReadWriter(w.ioBuf, bufio.NewWriter(w.Conn)))
 	wconn, err = w.upgrader.Upgrade(res, req, nil)
 	if err == nil {
-		log.Info("[websocket] connection established")
+		log.Println("[websocket] connection established")
 	}
 	return
 }
@@ -189,7 +189,7 @@ func newWssServer(conf *Config, tlsConf *tls.Config) (srv *WssServer, err error)
 		return nil, err
 	}
 
-	log.Infof("WSS %s", conf.Listen)
+	log.Printf("WSS %s", conf.Listen)
 	return &WssServer{
 		WsServer: WsServer{Listener: listener, conf: conf},
 		tlsConf:  tlsConf,
@@ -202,7 +202,7 @@ func (w *WssServer) Serve() error {
 	for {
 		conn, err := w.Listener.Accept()
 		if err != nil {
-			log.Errorf("WssServer listener accept error: %v", err)
+			log.Printf("WssServer listener accept error: %v \n", err)
 			continue
 		}
 

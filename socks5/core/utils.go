@@ -1,8 +1,9 @@
-package utils
+package core
 
 import (
 	"crypto/subtle"
 	"github.com/tg123/go-htpasswd"
+
 	"io"
 	"log"
 	"sync"

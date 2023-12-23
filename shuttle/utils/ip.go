@@ -1,16 +1,15 @@
 package utils
 
 import (
+	"log"
 	"net"
-
-	"google.dev/google/shuttle/utils/log"
 )
 
 // GetIP return local machine ips
 func GetIP() (ips []string) {
 	interfaceAddr, err := net.InterfaceAddrs()
 	if err != nil {
-		log.Errorf("fail to get net interface addrs: %v", err)
+		log.Printf("fail to get net interface addrs: %v \n", err)
 		return ips
 	}
 
@@ -29,7 +28,7 @@ func GetIP() (ips []string) {
 func GetMacAddrs() (macAddrs []string) {
 	netInterfaces, err := net.Interfaces()
 	if err != nil {
-		log.Errorf("fail to get net interfaces: %v", err)
+		log.Printf("fail to get net interfaces: %v \n", err)
 		return macAddrs
 	}
 

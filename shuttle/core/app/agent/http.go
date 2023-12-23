@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"google.dev/google/shuttle/pkg"
 	"io"
+	"log"
 	"net"
 	"net/http"
 
 	"google.dev/google/shuttle/utils"
-	"google.dev/google/shuttle/utils/log"
 )
 
 // HttpServer accept request and call handler to handle it
@@ -35,7 +35,7 @@ func (s *HttpServer) Serve() error {
 	for {
 		conn, err := s.Listener.Accept()
 		if err != nil {
-			log.Errorf("HttpServer listener accept error: %v", err)
+			log.Printf("HttpServer listener accept error: %v \n", err)
 			continue
 		}
 
@@ -72,7 +72,7 @@ func (s *HttpsServer) Serve() error {
 	for {
 		conn, err := s.Listener.Accept()
 		if err != nil {
-			log.Errorf("HttpsServer listener accept error: %v", err)
+			log.Printf("HttpsServer listener accept error: %v \n", err)
 			continue
 		}
 

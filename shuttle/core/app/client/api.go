@@ -4,12 +4,12 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"io"
+	"log"
 	"net"
 	"net/http"
 	"sync"
 
 	"google.dev/google/shuttle/core/app/client/conf"
-	"google.dev/google/shuttle/utils/log"
 )
 
 type agentApiServer struct {
@@ -30,8 +30,8 @@ func RouterRegister() {
 		panic(err)
 	}
 
-	log.Infof("Client starts to listen socks5://%s", listener.Addr().String())
-	log.Infof("Client starts to listen http://%s", listener.Addr().String())
+	log.Printf("Client starts to listen socks5://%s \n", listener.Addr().String())
+	log.Printf("Client starts to listen http://%s \n", listener.Addr().String())
 
 	client := NewClient(laddr.String())
 	client.TLSConfig = &tls.Config{

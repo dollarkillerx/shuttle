@@ -3,13 +3,13 @@ package client
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"net"
 	"os"
 	"strings"
 	"sync"
 
 	"github.com/fsnotify/fsnotify"
-	"google.dev/google/shuttle/utils/log"
 )
 
 const (
@@ -110,7 +110,7 @@ func NewRulesFromFile(path string) (r *Rules, err error) {
 	}
 
 	if err != nil {
-		log.Infof("Watch %s failed", path)
+		log.Printf("Watch %s failed", path)
 	} else {
 		go r.watchRules()
 	}
@@ -167,13 +167,13 @@ func scanRules(path string) (ipv4Tree, ipv6Tree *ipNode, domainTree *domainNode,
 func (r *Rules) watchRules() {
 	for event := range r.watcher.Events {
 		if event.Op&fsnotify.Write != 0 {
-			log.Infof("Reload %s", r.rulesPath)
+			log.Printf("Reload %s", r.rulesPath)
 			r.ruleMu.Lock()
 			ipv4Tree, ipv6Tree, domainTree, other, err := scanRules(r.rulesPath)
 			if err == nil {
 				r.ipv4Tree, r.ipv6Tree, r.domainTree, r.other = ipv4Tree, ipv6Tree, domainTree, other
 			} else {
-				log.Error(err)
+				log.Println(err)
 			}
 			r.ruleMu.Unlock()
 		}
